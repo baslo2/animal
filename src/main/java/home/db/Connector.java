@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class Connector {
+public final class Connector {
 
     private static final String JDBC_DRIVER_POSTGRESQL = "org.postgresql.Driver";
     private static final String CONNECTION_URL_POSTGRESQL = "jdbc:postgresql://localhost:5432/elf";

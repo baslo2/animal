@@ -4,17 +4,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OperationsDB {
+public final class OperationsDB {
 
     private final static String SELECT_ALL = "SELECT * FROM public.my_table;";
     private final static String INSERT = "INSERT INTO public.my_table (name) VALUES (?)";
+    private final static String DELETE_ALL = "TRUNCATE TABLE public.my_table";
 
     private final static String COL_NAME = "name";
     private final static String COL_ID = "id";
 
     public static void writeOne(String name) {
         try (var conn = Connector.getConnection();
-                var pstmt = conn.prepareStatement(INSERT)) {
+             var pstmt = conn.prepareStatement(INSERT)) {
             pstmt.setString(1, name);
             if (pstmt.executeUpdate() != 1) {
                 throw new SQLException("didn't write in date base");
@@ -26,7 +27,7 @@ public class OperationsDB {
 
     public static void writeAll(List<String> paramList) {
         try (var conn = Connector.getConnection();
-                var pstmt = conn.prepareStatement(INSERT)) {
+             var pstmt = conn.prepareStatement(INSERT)) {
             int operationCount = 0;
             for (String param : paramList) {
                 pstmt.setString(1, param);
@@ -38,6 +39,7 @@ public class OperationsDB {
                     pstmt.executeBatch();
                 }
             }
+            System.out.println("данные записанны в таблицу");
         } catch (SQLException e) {
             throw new IllegalStateException("database write error\n" + e.getMessage(), e);
         }
@@ -45,8 +47,8 @@ public class OperationsDB {
 
     public static List<String> readAll() {
         try (var conn = Connector.getConnection();
-                var stmt = conn.createStatement();
-                var res = stmt.executeQuery(SELECT_ALL)) {
+             var stmt = conn.createStatement();
+             var res = stmt.executeQuery(SELECT_ALL)) {
             var dataObjs = new ArrayList<String>();
             while (res.next()) {
                 dataObjs.add(res.getObject(COL_ID) + " " + res.getObject(COL_NAME));
@@ -54,6 +56,16 @@ public class OperationsDB {
             return dataObjs;
         } catch (SQLException e) {
             throw new IllegalStateException("database read error\n" + e.getMessage(), e);
+        }
+    }
+
+    public static void deleteAll() {
+        try (var conn = Connector.getConnection();
+             var pstmt = conn.prepareStatement(DELETE_ALL);) {
+            pstmt.executeUpdate();
+            System.out.println("данные таблицы удалены.");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

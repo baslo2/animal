@@ -2,7 +2,7 @@ package home.processing;
 
 import home.db.OperationsDB;
 
-public class DataBaseReader implements Writter {
+public final class DataBaseReader implements Writter {
 
     @Override
     public void write(String parametrs) {
