@@ -1,4 +1,4 @@
-package home.processing;
+package home.process;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +7,16 @@ import java.util.List;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 
+import home.handlers.ConsoleWritter;
+import home.handlers.CustomWritter;
+import home.handlers.DataBaseClear;
+import home.handlers.DataBaseReader;
+import home.handlers.DataBaseWritter;
+import home.handlers.FileWritter;
+import home.handlers.ICleaner;
+import home.handlers.IHandler;
+import home.handlers.IReadder;
+import home.handlers.IWritter;
 import home.model.Animal;
 import home.model.AnimalType;
 
@@ -22,9 +32,9 @@ public final class ArgsProcessor {
 
     private void handleInputArgs(String[] args) {
         jCommander = JCommander.newBuilder()
-                .addObject(cliParams)
-                .programName("simpleCLI")
-                .build();
+            .addObject(cliParams)
+            .programName("simpleCLI")
+            .build();
 
         try {
             jCommander.parse(args);
@@ -40,27 +50,38 @@ public final class ArgsProcessor {
         }
 
         String params = null;
-        Writter writter = null;
+        IHandler handler = null;
         if (cliParams.getValueOfShow() != null) {
             params = cliParams.getValueOfShow();
-            writter = new ConsoleWritter();
+            handler = new ConsoleWritter();
         } else if (cliParams.isCustom()) {
-            writter = new CustomWritter();
+            handler = new CustomWritter();
         } else if (cliParams.getVaLueOfWriteDB() != null) {
             params = cliParams.getVaLueOfWriteDB();
-            writter = new DataBaseWritter(cliParams.isReadDB());
+            handler = new DataBaseWritter(cliParams.isReadDB());
         } else if (cliParams.getValueOfFile() != null) {
             params = cliParams.getValueOfFile();
-            writter = new FileWritter();
+            handler = new FileWritter();
         } else if (cliParams.isReadDB()) {
-            writter = new DataBaseReader();
+            handler = new DataBaseReader();
         } else if (cliParams.isClearDataBase()) {
-            writter = new DataBaseClear();
+            handler = new DataBaseClear();
         } else {
             jCommander.usage();
             System.exit(0);
         }
-        writter.write(convertToAnimalList(params));
+
+        startProcessing(handler, params);
+    }
+
+    private void startProcessing(IHandler handler, String params) {
+        if (handler instanceof IWritter) {
+            ((IWritter) handler).write(convertToAnimalList(params));
+        } else if (handler instanceof IReadder) {
+            ((IReadder) handler).read();
+        } else if (handler instanceof ICleaner) {
+            ((ICleaner) handler).clean();
+        }
     }
 
     private List<Animal> convertToAnimalList(String params) {
@@ -75,7 +96,7 @@ public final class ArgsProcessor {
             List<String> paramsOfAnimal = Arrays.asList(s.split("_"));
             checkParamsCount(paramsOfAnimal);
             animals.add(new Animal(getType(paramsOfAnimal.get(0)), getAge(paramsOfAnimal.get(1)),
-                    paramsOfAnimal.get(2)));
+                paramsOfAnimal.get(2)));
         }
         return animals;
     }

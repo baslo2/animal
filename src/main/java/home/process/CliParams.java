@@ -1,11 +1,11 @@
-package home.processing;
+package home.process;
 
 import com.beust.jcommander.Parameter;
 
-public final class CliParams {
+final class CliParams {
 
     @Parameter(names = {"--show", "-s"},
-            description = "privet")
+        description = "privet")
     private String valueOfShow;
 
     @Parameter(names = {"--file", "-f"})

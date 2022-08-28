@@ -1,4 +1,4 @@
-package home.processing;
+package home.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.Scanner;
 import home.model.Animal;
 import home.model.AnimalType;
 
-public final class CustomWritter implements Writter {
+public final class CustomWritter implements IWritter {
 
     private static final String STOP = "n";
 

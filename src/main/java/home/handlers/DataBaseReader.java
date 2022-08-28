@@ -1,14 +1,12 @@
-package home.processing;
-
-import java.util.List;
+package home.handlers;
 
 import home.db.OperationsDB;
 import home.model.Animal;
 
-public final class DataBaseReader implements Writter {
+public final class DataBaseReader implements IReadder {
 
     @Override
-    public void write(List<Animal> animals) {
+    public void read() {
         for (Animal animal : OperationsDB.readAll()) {
             System.out.println(animal);
         }

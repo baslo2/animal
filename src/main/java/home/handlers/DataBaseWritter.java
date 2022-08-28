@@ -1,4 +1,4 @@
-package home.processing;
+package home.handlers;
 
 import java.util.HashSet;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import home.db.OperationsDB;
 import home.model.Animal;
 
-public final class DataBaseWritter implements Writter {
+public final class DataBaseWritter implements IWritter {
 
     private final boolean needRead;
 
