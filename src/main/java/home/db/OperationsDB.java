@@ -1,22 +1,30 @@
 package home.db;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import home.model.Animal;
+import home.model.AnimalType;
+
 public final class OperationsDB {
 
-    private final static String SELECT_ALL = "SELECT * FROM public.my_table;";
-    private final static String INSERT = "INSERT INTO public.my_table (name) VALUES (?)";
-    private final static String DELETE_ALL = "TRUNCATE TABLE public.my_table";
+    private final static String SELECT_ALL = "SELECT * FROM public.t_animals;";
+    private final static String INSERT = "INSERT INTO public.t_animals (type, age, name) VALUES (?, ?, ?)";
+    private final static String DELETE_ALL = "TRUNCATE TABLE public.t_animals";
 
-    private final static String COL_NAME = "name";
     private final static String COL_ID = "id";
+    private final static String COL_TYPE = "type";
+    private final static String COL_AGE = "age";
+    private final static String COL_NAME = "name";
 
-    public static void writeOne(String name) {
+    public static void writeOne(Animal animal) {
         try (var conn = Connector.getConnection();
              var pstmt = conn.prepareStatement(INSERT)) {
-            pstmt.setString(1, name);
+            pstmt.setString(1, animal.getType().getShortName());
+            pstmt.setInt(2, animal.getAge());
+            pstmt.setString(3, animal.getName());
             if (pstmt.executeUpdate() != 1) {
                 throw new SQLException("didn't write in date base");
             }
@@ -25,17 +33,19 @@ public final class OperationsDB {
         }
     }
 
-    public static void writeAll(List<String> paramList) {
+    public static void writeAll(List<Animal> animalList) {
         try (var conn = Connector.getConnection();
              var pstmt = conn.prepareStatement(INSERT)) {
             int operationCount = 0;
-            for (String param : paramList) {
-                pstmt.setString(1, param);
+            for (Animal animal : animalList) {
+                pstmt.setString(1, animal.getType().getShortName());
+                pstmt.setInt(2, animal.getAge());
+                pstmt.setString(3, animal.getName());
                 pstmt.addBatch();
                 operationCount++;
 
                 // Execute every 1000 items.
-                if (operationCount % 1000 == 0 || operationCount == paramList.size()) {
+                if (operationCount % 1000 == 0 || operationCount == animalList.size()) {
                     pstmt.executeBatch();
                 }
             }
@@ -45,18 +55,27 @@ public final class OperationsDB {
         }
     }
 
-    public static List<String> readAll() {
+    public static List<Animal> readAll() {
         try (var conn = Connector.getConnection();
              var stmt = conn.createStatement();
              var res = stmt.executeQuery(SELECT_ALL)) {
-            var dataObjs = new ArrayList<String>();
+            var dataObjs = new ArrayList<Animal>();
             while (res.next()) {
-                dataObjs.add(res.getObject(COL_ID) + " " + res.getObject(COL_NAME));
+                dataObjs.add(convertResultToDataObj(res));
             }
             return dataObjs;
         } catch (SQLException e) {
             throw new IllegalStateException("database read error\n" + e.getMessage(), e);
         }
+    }
+
+    private static Animal convertResultToDataObj(ResultSet res) throws SQLException {
+        var type = res.getString(COL_TYPE);
+        var animalType = AnimalType.getAnimalType(type);
+        if (animalType == null) {
+            throw new SQLException("Wrong type " + type);
+        }
+        return new Animal(res.getInt(COL_ID), animalType, res.getInt(COL_AGE), res.getString(COL_NAME));
     }
 
     public static void deleteAll() {

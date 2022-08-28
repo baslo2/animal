@@ -1,14 +1,17 @@
 package home.processing;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+import home.model.Animal;
 
 public final class CustomWritter implements Writter {
 
     private static final String STOP = "STOP";
 
     @Override
-    public void write(String parametrs) {
+    public void write(List<Animal> animals) {
         var paramList = new ArrayList<String>();
 
         try (var sc = new Scanner(System.in)) {

@@ -1,6 +1,10 @@
 package home.processing;
 
+import java.util.List;
+
+import home.model.Animal;
+
 public interface Writter {
 
-    void write(String parametrs);
+    void write(List<Animal> animals);
 }

@@ -6,6 +6,10 @@ import home.utils.Utils;
 public final class Main {
 
     public static void main(String[] args) {
-        Utils.measureSpendTime(new ArgsProcessor()::executeProcess, args);
+        try {
+            Utils.measureSpendTime(new ArgsProcessor()::executeProcess, args);;
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
     }
 }
