@@ -1,16 +1,16 @@
 package home.processing;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+
+import home.model.Animal;
 
 public final class FileWritter implements Writter {
 
     @Override
-    public void write(String parametrs) {
-        List<String> paramList = Arrays.asList(parametrs.split(","));
-        for (String param : new HashSet<>(paramList)) {
-            System.out.println(">>> " + param);
+    public void write(List<Animal> animals) {
+        for (Animal animal : new HashSet<>(animals)) {
+            System.out.println(">>> " + animal);
         }
     }
 }
