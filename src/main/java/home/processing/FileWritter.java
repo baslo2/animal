@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class FileWritter implements Writter {
+public final class FileWritter implements Writter {
 
     @Override
     public void write(String parametrs) {

@@ -1,6 +1,6 @@
 package home.processing;
 
-public class ConsoleWritter implements Writter {
+public final class ConsoleWritter implements Writter {
 
     @Override
     public void write(String parametrs) {
