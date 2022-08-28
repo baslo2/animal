@@ -7,7 +7,14 @@ public final class Main {
 
     public static void main(String[] args) {
         try {
-            Utils.measureSpendTime(new ArgsProcessor()::executeProcess, args);
+            Settings.readSettings();
+
+            var argsProcessor = new ArgsProcessor();
+            if (Settings.hasMeasure()){
+                Utils.measureSpendTime(argsProcessor::executeProcess, args);
+            } else {
+                argsProcessor.executeProcess(args);
+            }
         } catch (Exception e) {
             System.out.println("ERROR: " + e.getMessage());
         }
