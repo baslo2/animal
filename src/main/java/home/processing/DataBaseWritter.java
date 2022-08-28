@@ -6,7 +6,13 @@ import java.util.List;
 
 import home.db.OperationsDB;
 
-public class DataBaseWritter implements Writter {
+public final class DataBaseWritter implements Writter {
+
+    private final boolean needRead;
+
+    public DataBaseWritter(boolean needRead) {
+        this.needRead = needRead;
+    }
 
     @Override
     public void write(String parametrs) {
@@ -19,6 +25,15 @@ public class DataBaseWritter implements Writter {
                 OperationsDB.writeOne(param);
             }
             System.out.println("write in DB was correct");
+        }
+        if (needRead) {
+            read();
+        }
+    }
+
+    private void read() {
+        for (String param : OperationsDB.readAll()) {
+            System.out.println(param);
         }
     }
 }

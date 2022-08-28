@@ -3,7 +3,7 @@ package home.processing;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CustomWritter implements Writter {
+public final class CustomWritter implements Writter {
 
     private static final String STOP = "STOP";
 
