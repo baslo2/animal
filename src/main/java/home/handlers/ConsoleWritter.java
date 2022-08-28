@@ -1,10 +1,10 @@
-package home.processing;
+package home.handlers;
 
 import java.util.List;
 
 import home.model.Animal;
 
-public final class ConsoleWritter implements Writter {
+public final class ConsoleWritter implements IWritter {
 
     @Override
     public void write(List<Animal> animals) {

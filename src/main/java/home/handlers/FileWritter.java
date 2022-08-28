@@ -1,11 +1,11 @@
-package home.processing;
+package home.handlers;
 
 import java.util.HashSet;
 import java.util.List;
 
 import home.model.Animal;
 
-public final class FileWritter implements Writter {
+public final class FileWritter implements IWritter {
 
     @Override
     public void write(List<Animal> animals) {
