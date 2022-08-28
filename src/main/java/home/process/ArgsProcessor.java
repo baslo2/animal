@@ -13,10 +13,7 @@ import home.handlers.DataBaseClear;
 import home.handlers.DataBaseReader;
 import home.handlers.DataBaseWritter;
 import home.handlers.FileWritter;
-import home.handlers.ICleaner;
 import home.handlers.IHandler;
-import home.handlers.IReadder;
-import home.handlers.IWritter;
 import home.model.Animal;
 import home.model.AnimalType;
 
@@ -71,17 +68,7 @@ public final class ArgsProcessor {
             System.exit(0);
         }
 
-        startProcessing(handler, params);
-    }
-
-    private void startProcessing(IHandler handler, String params) {
-        if (handler instanceof IWritter) {
-            ((IWritter) handler).write(convertToAnimalList(params));
-        } else if (handler instanceof IReadder) {
-            ((IReadder) handler).read();
-        } else if (handler instanceof ICleaner) {
-            ((ICleaner) handler).clean();
-        }
+        handler.handle(convertToAnimalList(params));
     }
 
     private List<Animal> convertToAnimalList(String params) {
