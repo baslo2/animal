@@ -44,16 +44,15 @@ public final class ArgsProcessor {
         if (cliParams.getValueOfShow() != null) {
             params = cliParams.getValueOfShow();
             writter = new ConsoleWritter();
-        } else if (cliParams.getValueOfCustom() != null) {
-            params = cliParams.getValueOfCustom();
+        } else if (cliParams.isCustom()) {
             writter = new CustomWritter();
         } else if (cliParams.getVaLueOfWriteDB() != null) {
             params = cliParams.getVaLueOfWriteDB();
-            writter = new DataBaseWritter(cliParams.getValueOfReadDB());
+            writter = new DataBaseWritter(cliParams.isReadDB());
         } else if (cliParams.getValueOfFile() != null) {
             params = cliParams.getValueOfFile();
             writter = new FileWritter();
-        } else if (cliParams.getValueOfReadDB()) {
+        } else if (cliParams.isReadDB()) {
             writter = new DataBaseReader();
         } else if (cliParams.isClearDataBase()) {
             writter = new DataBaseClear();

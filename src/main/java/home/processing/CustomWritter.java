@@ -5,30 +5,41 @@ import java.util.List;
 import java.util.Scanner;
 
 import home.model.Animal;
+import home.model.AnimalType;
 
 public final class CustomWritter implements Writter {
 
-    private static final String STOP = "STOP";
+    private static final String STOP = "n";
 
     @Override
     public void write(List<Animal> animals) {
-        var paramList = new ArrayList<String>();
+        var paramList = new ArrayList<Animal>();
 
         try (var sc = new Scanner(System.in)) {
-            System.out.println("To breake operation enter '" + STOP + "'.\nEnter name(s):\n");
+            System.out.println("Applycation started.");
             boolean isStopped = false;
-            String textFromUser = null;
             while (!isStopped) {
-                textFromUser = sc.next();
-                isStopped = STOP.equalsIgnoreCase(textFromUser);
-                if (!isStopped) {
-                    paramList.add(textFromUser);
-                }
+                System.out.println("Enter type:");
+                AnimalType type = AnimalType.getAnimalType(sc.next());
+
+                System.out.println("Enter age:");
+                int age = sc.nextInt();
+
+                System.out.println("Enter name:");
+                String name = sc.next();
+
+                Animal animal = new Animal(type, age, name);
+                paramList.add(animal);
+                System.out.println("animal added: " + animal);
+                System.out.println("Total animals added: " + paramList.size());
+
+                System.out.println("Do you want add one more? (y/n)");
+                isStopped = STOP.equalsIgnoreCase(sc.next());
             }
         }
-
-        for (String param : paramList) {
-            System.out.println("!!! " + param);
+        for (Animal animal : paramList) {
+            System.out.println("!!! " + animal);
         }
+        System.out.println("Applycation finished");
     }
 }
