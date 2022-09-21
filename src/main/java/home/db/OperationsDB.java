@@ -2,6 +2,7 @@ package home.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,12 +47,36 @@ public final class OperationsDB {
 
                 // Execute every 1000 items.
                 if (operationCount % 1000 == 0 || operationCount == animalList.size()) {
-                    pstmt.executeBatch();
+                    checkBatchExecution(pstmt.executeBatch());
                 }
             }
             System.out.println("данные записанны в таблицу");
         } catch (SQLException e) {
             throw new IllegalStateException("database write error\n" + e.getMessage(), e);
+        }
+    }
+
+    static void checkBatchExecution(int[] batchResults) throws SQLException {
+        if (batchResults == null) {
+            System.out.println("Batch execution result is null.");
+            return;
+        }
+
+        for (int batchResult : batchResults) {
+            if (batchResult >= 0 || Statement.SUCCESS_NO_INFO == batchResult) {
+                // everything is fine.
+                continue;
+            }
+
+            var msg = new StringBuilder("Batch execution error:\nwhen executing the batch,");
+
+            if (Statement.EXECUTE_FAILED == batchResult) {
+                msg.append("result code 'EXECUTE_FAILED' was received.");
+                throw new SQLException(msg.toString());
+            }
+
+            msg.append("Unknown result code ").append(batchResult).append(" was received");
+            throw new SQLException(msg.toString());
         }
     }
 
