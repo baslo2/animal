@@ -60,7 +60,7 @@ public final class ArgsProcessor {
         } else if (cliParams.getValueOfFileExport() != null) {
             params = cliParams.getValueOfFileExport();
             handler = new FileWritter();
-        }else if (cliParams.isFileImport()) {
+        } else if (cliParams.isFileImport()) {
             handler = new FileReader();
         } else if (cliParams.isReadDB()) {
             handler = new DataBaseReader();
