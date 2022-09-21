@@ -38,7 +38,7 @@ public final class Animal {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getType(), getAge(), getName());
+        return Objects.hash(getType(), getAge(), getName());
     }
 
     @Override
@@ -52,8 +52,7 @@ public final class Animal {
         }
 
         Animal other = (Animal) obj;
-        return id == other.getId()
-                && type == other.getType()
+        return type == other.getType()
                 && age == other.getAge()
                 && Objects.equals(name, other.getName());
     }

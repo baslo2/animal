@@ -65,14 +65,19 @@ public final class Settings {
     }
 
     public static void readSettings(){
-        try (var inputStream = new FileInputStream(getSettingsPath())){
+        readSettings(getSettingsPath());
+    }
+
+    // overloaded method for tests
+    public static void readSettings(String path) {
+        try (var inputStream = new FileInputStream(path)){
             SETTINGS.load(inputStream);
         } catch (IOException e) {
-            throw new IllegalStateException("Error while read settings from file: " + SETTINGS_FILE_NAME, e);
+            throw new IllegalStateException("Error while read settings from file: " + path, e);
         }
     }
 
-    private static String getSettingsPath() throws IOException {
+    private static String getSettingsPath() {
         try {
             var file = new File(SETTINGS_FILE_NAME);
             if (!file.exists()) {
