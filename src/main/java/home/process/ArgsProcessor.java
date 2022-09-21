@@ -12,6 +12,7 @@ import home.handlers.CustomWritter;
 import home.handlers.DataBaseClear;
 import home.handlers.DataBaseReader;
 import home.handlers.DataBaseWritter;
+import home.handlers.FileReader;
 import home.handlers.FileWritter;
 import home.handlers.IHandler;
 import home.model.Animal;
@@ -56,9 +57,11 @@ public final class ArgsProcessor {
         } else if (cliParams.getVaLueOfWriteDB() != null) {
             params = cliParams.getVaLueOfWriteDB();
             handler = new DataBaseWritter(cliParams.isReadDB());
-        } else if (cliParams.getValueOfFile() != null) {
-            params = cliParams.getValueOfFile();
+        } else if (cliParams.getValueOfFileExport() != null) {
+            params = cliParams.getValueOfFileExport();
             handler = new FileWritter();
+        }else if (cliParams.isFileImport()) {
+            handler = new FileReader();
         } else if (cliParams.isReadDB()) {
             handler = new DataBaseReader();
         } else if (cliParams.isClearDataBase()) {

@@ -8,8 +8,11 @@ final class CliParams {
         description = "privet")
     private String valueOfShow;
 
-    @Parameter(names = {"--file", "-f"})
-    private String valueOfFile;
+    @Parameter(names = {"--file-export", "-fe"})
+    private String valueOfFileExport;
+
+    @Parameter(names = {"--file-import", "-fi"})
+    private boolean isFileImport;
 
     @Parameter(names = {"--read-db", "-rd"})
     private boolean isReadDB;
@@ -30,8 +33,12 @@ final class CliParams {
         return valueOfShow;
     }
 
-    public String getValueOfFile() {
-        return valueOfFile;
+    public String getValueOfFileExport() {
+        return valueOfFileExport;
+    }
+
+    public boolean isFileImport() {
+        return isFileImport;
     }
 
     public boolean isReadDB() {
