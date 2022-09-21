@@ -1,24 +1,27 @@
-package home.processing;
+package home.process;
 
 import com.beust.jcommander.Parameter;
 
-public final class CliParams {
+final class CliParams {
 
     @Parameter(names = {"--show", "-s"},
-            description = "privet")
+        description = "privet")
     private String valueOfShow;
 
-    @Parameter(names = {"--file", "-f"})
-    private String valueOfFile;
+    @Parameter(names = {"--file-export", "-fe"})
+    private String valueOfFileExport;
+
+    @Parameter(names = {"--file-import", "-fi"})
+    private boolean isFileImport;
 
     @Parameter(names = {"--read-db", "-rd"})
-    private boolean valueOfReadDB;
+    private boolean isReadDB;
 
     @Parameter(names = {"--write-db", "-wd"})
     private String valueOfWriteDB;
 
     @Parameter(names = {"--custom", "-c"})
-    private String valueOfCustom;
+    private boolean isCustom;
 
     @Parameter(names = {"--help", "-h"})
     private boolean help;
@@ -30,20 +33,24 @@ public final class CliParams {
         return valueOfShow;
     }
 
-    public String getValueOfFile() {
-        return valueOfFile;
+    public String getValueOfFileExport() {
+        return valueOfFileExport;
     }
 
-    public boolean getValueOfReadDB() {
-        return valueOfReadDB;
+    public boolean isFileImport() {
+        return isFileImport;
+    }
+
+    public boolean isReadDB() {
+        return isReadDB;
     }
 
     public String getVaLueOfWriteDB() {
         return valueOfWriteDB;
     }
 
-    public String getValueOfCustom() {
-        return valueOfCustom;
+    public boolean isCustom() {
+        return isCustom;
     }
 
     public boolean isHelp() {
